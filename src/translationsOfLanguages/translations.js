@@ -8,7 +8,7 @@ export const translations = {
     time: "Time",
     timezone: "Timezone",
     moreInfo: "More Info",
-    weeklyForecast: "Here you can show weekly forecast, maps, etc."
+    weeklyForecast: "Here you can show weekly forecast etc."
   },
   ru: {
     weatherApp: "Прогноз погоды",
@@ -19,7 +19,7 @@ export const translations = {
     time: "Время",
     timezone: "Часовой пояс",
     moreInfo: "Дополнительная информация",
-    weeklyForecast: "Здесь можно показать прогноз на неделю, карты и т.д."
+    weeklyForecast: "Здесь можно показать прогноз на неделю и т.д."
   },
   it: {
     weatherApp: "App Meteo",
@@ -30,7 +30,7 @@ export const translations = {
     time: "Ora",
     timezone: "Fuso orario",
     moreInfo: "Altre informazioni",
-    weeklyForecast: "Qui puoi mostrare il meteo settimanale, mappe, ecc."
+    weeklyForecast: "Qui puoi mostrare il meteo settimanale, ecc."
   },
   zh: {
     weatherApp: "天气应用",
@@ -52,6 +52,6 @@ export const translations = {
     time: "Hora",
     timezone: "Zona horaria",
     moreInfo: "Más información",
-    weeklyForecast: "Aquí puedes mostrar el pronóstico semanal, mapas, etc."
+    weeklyForecast: "Aquí puedes mostrar el pronóstico semanal, etc."
   }
 };
