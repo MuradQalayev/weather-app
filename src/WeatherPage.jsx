@@ -1,46 +1,26 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import './weatherPage.css';
 import WeatherCard from './WeatherCard';
 import { LanguageContext } from './LanguageContext';
 import { translations } from './translationsOfLanguages/translations';
+import WeatherVideo from './WeatherVideo';
+import fetchWeather from './API/cityCoordinates';
+import '../src/studymode.css'
+import { useNavigate } from 'react-router-dom';
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
-const fetchWeather = async (city) => {
-  const geoRes = await fetch(
-    `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`
-  );
-  if (!geoRes.ok) throw new Error("Geocoding failed");
 
-  const geoData = await geoRes.json();
-  const place = geoData.results[0];
-
-  if (
-    !geoData.results ||
-    geoData.results.length === 0 ||
-    !place.name ||
-    !place.country ||
-    (place.population && place.population < 1000) ||
-    city.length < 2
-  ) {
-    throw new Error("City not found");
-  }
-
-  const { latitude, longitude } = geoData.results[0];
-
-  const response = await fetch(
-    `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=auto`
-  );
-  if (!response.ok) throw new Error("Weather API failed");
-
-  return response.json();
-};
 
 const WeatherPage = () => {
   const [city, setCity] = useState('Baku');
   const [search, setSearch] = useState('');
-  const [localTime, setLocalTime] = useState('');
   const { language, switchLanguage } = useContext(LanguageContext);
   const [isPlaying, setIsPlaying] = useState(false);
+  const navigate = useNavigate()
+  const forecastRef = useRef(null);
+  const [visible, setisVisible] = useState(true)
+
 
   function handleSearch() {
     if (!search.trim()) return;
@@ -55,26 +35,28 @@ const WeatherPage = () => {
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 30,
   });
+  const clockRef = useRef();
 
-  useEffect(() => {
-    if (!data?.timezone) return;
+useEffect(() => {
+  if (!data?.timezone) return;
 
-    const updateClock = () => {
-      const formatter = new Intl.DateTimeFormat("en-GB", {
-        timeZone: data.timezone,
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
-      });
-      setLocalTime(formatter.format(new Date()));
-    };
+  const updateClock = () => {
+    const formatter = new Intl.DateTimeFormat("en-GB", {
+      timeZone: data.timezone,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
+    if (clockRef.current) {
+      clockRef.current.textContent = formatter.format(new Date());
+    }
+  };
 
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-
-    return () => clearInterval(interval);
-  }, [data?.timezone]);
+  updateClock();
+  const interval = setInterval(updateClock, 1000);
+  return () => clearInterval(interval);
+}, [data?.timezone]);
 
   function trimmedTime(time) {
     return time.slice(0, 10);
@@ -82,24 +64,30 @@ const WeatherPage = () => {
 
   return (
     <div className="page">
-      <div className="language-switcher">
-        <select
-          value={language}
-          onChange={(e) => switchLanguage(e.target.value)}
-          className="language-dropdown"
-        >
-          <option value="en">🇬🇧 English</option>
-          <option value="ru">🇷🇺 Русский</option>
-          <option value="it">🇮🇹 Italiano</option>
-          <option value="zh">🇨🇳 中文</option>
-          <option value="es">🇪🇸 Español</option>
-        </select>
+      <div className="navbar">
+        <div className="nav-controls">
+          <select
+            value={language}
+            onChange={(e) => switchLanguage(e.target.value)}
+            className="language-dropdown"
+          >
+            <option value="en">🇬🇧 English</option>
+            <option value="ru">🇷🇺 Русский</option>
+            <option value="it">🇮🇹 Italiano</option>
+            <option value="zh">🇨🇳 中文</option>
+            <option value="es">🇪🇸 Español</option>
+          </select>
+          {/* <button onClick={() => navigate("/studymode")} className="study-btn">
+            {translations[language].studyMode}
+          </button> */}
+        </div>
       </div>
 
       <div className="hero">
         <div className="overlay">
           <h1>{translations[language].weatherApp}</h1>
-          <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+
+          <div className="search-bar">
             <input
               type="text"
               value={search}
@@ -110,59 +98,76 @@ const WeatherPage = () => {
             <button onClick={handleSearch}>
               {translations[language].searchButton}
             </button>
-            
           </div>
+
+          <div className="clock" ref={clockRef}></div>
 
           {data && (
             <>
-              <p>{translations[language].city}: <b>{city}</b></p>
-              <p>{translations[language].temperature}: <b>{data.current_weather?.temperature}°C</b></p>
-              <p>{translations[language].time}: <b>{trimmedTime(data.current_weather?.time)}</b></p>
+              <p>
+                {translations[language].city}: <b>{city}</b>
+              </p>
+              <p>
+                {translations[language].temperature}:{" "}
+                <b>{data.current_weather?.temperature}°C</b>
+              </p>
+              <p>
+                {translations[language].time}:{" "}
+                <b>{trimmedTime(data.current_weather?.time)}</b>
+              </p>
               <p>{data.timezone}</p>
             </>
           )}
         </div>
-        <div className='clock'>
-          {localTime && (
-              <div>
-                {localTime}
-              </div>
-            )}
-        </div>
       </div>
 
       <div className="video-background">
-        <video autoPlay muted loop playsInline>
-          <source src="./src/assets/rain.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-            <audio id="bg-music" loop muted>
-                <source src="./src/assets/rain_music.mp3" type="audio/mp3" />
-                Your browser does not support the audio element.
-              </audio>
+        <WeatherVideo
+          weatherCode={data?.current_weather?.weathercode ?? 1}
+          isDay={data?.current_weather?.is_day ?? 1}
+        />
+        <audio id="bg-music" loop muted>
+          <source src="./src/assets/rain_music.mp3" type="audio/mp3" />
+          Your browser does not support the audio element.
+        </audio>
+        {visible ? (
+          <button
+            className="details-toggle"
+            onClick={() =>{
+              forecastRef.current.scrollIntoView({ behavior: "smooth" });
+              setisVisible(false)}
+            }
+          >
+            <DotLottieReact
+              src="https://lottie.host/89133f61-fa5e-48c9-89c3-333151310841/aSszO2CgEj.lottie"
+              loop
+              autoplay
+            />
+          </button>
+        ) : (
+          ""
+        )}
 
-              <button
-                onClick={() => {
-                  const audio = document.getElementById("bg-music");
-                  if (audio.paused) {
-                    audio.muted = false;
-                    audio.play();
-                    setIsPlaying(true);
-                  } else {
-                    audio.pause();
-                    setIsPlaying(false);
-                  }
-                }}
-                className="music-toggle"
-              >
-                {isPlaying ? "🔊 Music On" : "🔇 Music Off"}
-              </button>
+        <button
+          onClick={() => {
+            const audio = document.getElementById("bg-music");
+            if (audio.paused) {
+              audio.muted = false;
+              audio.play();
+              setIsPlaying(true);
+            } else {
+              audio.pause();
+              setIsPlaying(false);
+            }
+          }}
+          className="music-toggle"
+        >
+          {isPlaying ? "🔊 Music On" : "🔇 Music Off"}
+        </button>
 
-
-
-        <div className="content">
-          <h2>{translations[language].moreInfo}</h2>
-          <p>{translations[language].weeklyForecast}</p>
+        <div ref={forecastRef} className="content">
+          {/* <h2>{translations[language].moreInfo}</h2> */}
+          {/* <p>{translations[language].weeklyForecast}</p> */}
           <div>
             {data?.daily && (
               <div className="forecast">

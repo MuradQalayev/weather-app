@@ -8,7 +8,9 @@ export const translations = {
     time: "Time",
     timezone: "Timezone",
     moreInfo: "More Info",
-    weeklyForecast: "Here you can show weekly forecast etc."
+    weeklyForecast: "Here you can show weekly forecast etc.",
+    studyMode: "Study Mode",
+    normalMode: "Normal Mode",
   },
   ru: {
     weatherApp: "Прогноз погоды",
@@ -19,7 +21,9 @@ export const translations = {
     time: "Время",
     timezone: "Часовой пояс",
     moreInfo: "Дополнительная информация",
-    weeklyForecast: "Здесь можно показать прогноз на неделю и т.д."
+    weeklyForecast: "Здесь можно показать прогноз на неделю и т.д.",
+    studyMode: "Учебный режим",
+    normalMode: "Обычный режим",
   },
   it: {
     weatherApp: "App Meteo",
@@ -30,7 +34,9 @@ export const translations = {
     time: "Ora",
     timezone: "Fuso orario",
     moreInfo: "Altre informazioni",
-    weeklyForecast: "Qui puoi mostrare il meteo settimanale, ecc."
+    weeklyForecast: "Qui puoi mostrare il meteo settimanale, ecc.",
+    studyMode: "Modalità studio",
+    normalMode: "Modalità normale",
   },
   zh: {
     weatherApp: "天气应用",
@@ -41,7 +47,9 @@ export const translations = {
     time: "时间",
     timezone: "时区",
     moreInfo: "更多信息",
-    weeklyForecast: "在这里可以显示每周天气预报、地图等。"
+    weeklyForecast: "在这里可以显示每周天气预报、地图等。",
+    studyMode: "学习模式",
+    normalMode: "普通模式",
   },
   es: {
     weatherApp: "Aplicación del Clima",
@@ -52,6 +60,8 @@ export const translations = {
     time: "Hora",
     timezone: "Zona horaria",
     moreInfo: "Más información",
-    weeklyForecast: "Aquí puedes mostrar el pronóstico semanal, etc."
-  }
+    weeklyForecast: "Aquí puedes mostrar el pronóstico semanal, etc.",
+    studyMode: "Modo de estudio",
+    normalMode: "Modo normal",
+  },
 };

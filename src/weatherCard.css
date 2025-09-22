@@ -9,7 +9,7 @@
 .weather-card {
   width: 160px;
   height: 140px;
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background:rgba(255, 255, 255, 0.15);
   border-radius: 16px;
   padding: 12px;
   color: #fff;
@@ -19,13 +19,13 @@
   justify-content: space-between;
   gap: 10px;
   box-shadow: 0 6px 14px rgba(0,0,0,0.25);
-  /* transition: transform 0.25s ease, box-shadow 0.25s ease; */
   cursor: pointer;
 }
 
 .weather-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 10px 20px rgba(0,0,0,0.35);
+  
 }
 
 .weather-card h3 {
@@ -44,6 +44,3 @@
   font-weight: 500;
 }
 
-body {
-  font-family: 'Roboto', sans-serif;
-}
