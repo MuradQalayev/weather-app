@@ -1,59 +1,78 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useReducer } from "react";
 import { useQuery } from "@tanstack/react-query";
-import './weatherPage.css';
-import WeatherCard from './WeatherCard';
-import { LanguageContext } from './LanguageContext';
-import { translations } from './translationsOfLanguages/translations';
-import WeatherVideo from './WeatherVideo';
-import fetchWeather from './API/cityCoordinates';
-import '../src/studymode.css'
-import { useNavigate } from 'react-router-dom';
+import "./weatherPage.css";
+import WeatherCard from "./WeatherCard";
+import { LanguageContext } from "./LanguageContext";
+import { translations } from "./translationsOfLanguages/translations";
+import WeatherVideo from "./WeatherVideo";
+import fetchWeather from "./API/cityCoordinates";
+import "../src/studymode.css";
 
 
+function reducer(state, action) {
+  switch (action.type) {
+    case "SET_CITY":
+      return { ...state, city: action.payload };
+    case "SET_SEARCH":
+      return { ...state, search: action.payload };
+    case "TOGGLE_PLAY":
+      return { ...state, isPlaying: !state.isPlaying };
+    default:
+      return state;
+  }
+}
 
 const WeatherPage = () => {
-  const [city, setCity] = useState('Baku');
-  const [search, setSearch] = useState('');
+  const [state, dispatch] = useReducer(reducer, {
+    city: "Baku",
+    search: "",
+    isPlaying: false,
+  });
   const { language, switchLanguage } = useContext(LanguageContext);
-  const [isPlaying, setIsPlaying] = useState(false);
   const forecastRef = useRef(null);
 
-
   function handleSearch() {
-    if (!search.trim()) return;
-    setCity(search.charAt(0).toUpperCase() + search.slice(1).toLowerCase());
-    setSearch('');
+    if (!state.search.trim()) return;
+    dispatch({
+      type: "SET_CITY",
+      payload:
+        state.search.charAt(0).toUpperCase() + state.search.slice(1).toLowerCase(),
+    });
+    dispatch({
+      type: "SET_SEARCH",
+      payload: "",
+    });
   }
 
   const { data } = useQuery({
-    queryKey: ["weather", city],
-    queryFn: () => fetchWeather(city),
-    enabled: !!city,
+    queryKey: ["weather", state.city],
+    queryFn: () => fetchWeather(state.city),
+    enabled: !!state.city,
     staleTime: 1000 * 60 * 5,
     cacheTime: 1000 * 60 * 30,
   });
   const clockRef = useRef();
 
-useEffect(() => {
-  if (!data?.timezone) return;
+  useEffect(() => {
+    if (!data?.timezone) return;
 
-  const updateClock = () => {
-    const formatter = new Intl.DateTimeFormat("en-GB", {
-      timeZone: data.timezone,
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    });
-    if (clockRef.current) {
-      clockRef.current.textContent = formatter.format(new Date());
-    }
-  };
+    const updateClock = () => {
+      const formatter = new Intl.DateTimeFormat("en-GB", {
+        timeZone: data.timezone,
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false,
+      });
+      if (clockRef.current) {
+        clockRef.current.textContent = formatter.format(new Date());
+      }
+    };
 
-  updateClock();
-  const interval = setInterval(updateClock, 1000);
-  return () => clearInterval(interval);
-}, [data?.timezone]);
+    updateClock();
+    const interval = setInterval(updateClock, 1000);
+    return () => clearInterval(interval);
+  }, [data?.timezone]);
 
   function trimmedTime(time) {
     return time.slice(0, 10);
@@ -74,9 +93,6 @@ useEffect(() => {
             <option value="zh">🇨🇳 中文</option>
             <option value="es">🇪🇸 Español</option>
           </select>
-          {/* <button onClick={() => navigate("/studymode")} className="study-btn">
-            {translations[language].studyMode}
-          </button> */}
         </div>
       </div>
 
@@ -87,8 +103,10 @@ useEffect(() => {
           <div className="search-bar">
             <input
               type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              value={state.search}
+              onChange={(e) =>
+                dispatch({ type: "SET_SEARCH", payload: e.target.value })
+              }
               placeholder={translations[language].searchPlaceholder}
               onKeyDown={(e) => e.key === "Enter" && handleSearch()}
             />
@@ -102,7 +120,7 @@ useEffect(() => {
           {data && (
             <>
               <p>
-                {translations[language].city}: <b>{city}</b>
+                {translations[language].city}: <b>{state.city}</b>
               </p>
               <p>
                 {translations[language].temperature}:{" "}
@@ -134,15 +152,16 @@ useEffect(() => {
             if (audio.paused) {
               audio.muted = false;
               audio.play();
-              setIsPlaying(true);
             } else {
               audio.pause();
-              setIsPlaying(false);
             }
+            dispatch({ type: "TOGGLE_PLAY" });
           }}
           className="music-toggle"
         >
-          {isPlaying ? `🔊 ${translations[language].musicOn}` : `🔇${translations[language].musicOff} `}
+          {state.isPlaying
+            ? `🔊 ${translations[language].musicOn}`
+            : `🔇${translations[language].musicOff} `}
         </button>
 
         <div ref={forecastRef} className="content">
@@ -155,7 +174,7 @@ useEffect(() => {
                   <WeatherCard
                     key={date}
                     time={date}
-                    city={city}
+                    city={state.city}
                     min={data.daily.temperature_2m_min[i]}
                     max={data.daily.temperature_2m_max[i]}
                     weatherCode={data.daily.weathercode[i]}

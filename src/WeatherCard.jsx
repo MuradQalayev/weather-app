@@ -38,7 +38,6 @@ export const getWeatherCategory =(code) =>{
 
 
 const WeatherCard = ({ city, min, max, weatherCode,time }) => {
-  console.log("rendered");
   return (
     <div className="weather-card">
       <h3>{city}</h3>

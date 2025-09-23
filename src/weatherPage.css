@@ -196,3 +196,15 @@ body {
 .no-scroll {
   overflow-x: hidden; 
 }
+
+.right-panel {
+  position: absolute;
+  right: 20px;
+  bottom: 100px; 
+  width: 320px;
+  height: 180px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
