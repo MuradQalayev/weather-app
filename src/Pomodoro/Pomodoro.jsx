@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import "./Pomodoro.css"; 
-import { translations } from "./translationsOfLanguages/translations";
-import { LanguageContext } from "./LanguageContext";
+import '../styles/pomodoro.css'
+import { translations } from "../translationsOfLanguages/translations";
+import { LanguageContext } from "../Context/LanguageContext";
+
 
 function Pomodoro({ isPlaying, dispatch, audio, pomodoroState , setPomodoroState,showPomodoro}) {
   const { language } = useContext(LanguageContext);
@@ -68,29 +69,30 @@ function Pomodoro({ isPlaying, dispatch, audio, pomodoroState , setPomodoroState
 
 console.log(pomodoroState.time);
   return (
-    <div className="pomodoro-container">
+    <div className="pomodoro-container" data-cy="pomodoro">
       <h3>{translations[language].pomodoro}</h3>
-      <div className="pomodoro-timer">{formatTime(pomodoroState.time)}</div>
+      <div className="pomodoro-timer" data-cy="pomodoro-timer">{formatTime(pomodoroState.time)}</div>
 
-      <div className="pomodoro-input">
+      <div className="pomodoro-input" >
         <input
+          data-cy="pomodoro-input"
           type="number"
           value={inputMinutes}
           onChange={(e) => setInputMinutes(Number(e.target.value))}
         />
-        <button onClick={handleSetTime}>{translations[language].set}</button>
+        <button onClick={handleSetTime} data-cy="pomodoro-set">{translations[language].set}</button>
       </div>
 
       <div className="pomodoro-buttons">
-        <button onClick={handleStartStop}>
+        <button onClick={handleStartStop} data-cy="pomodoro-startstop">
           {pomodoroState.isActive
             ? translations[language].stop
             : translations[language].start}
         </button>
-        <button onClick={handleReset}>{translations[language].reset}</button>
+        <button onClick={handleReset} data-cy="pomodoro-reset">{translations[language].reset}</button>
       </div>
       {showModal && (
-        <div className="modal-overlay">
+        <div className="modal-overlay" data-cy="pomodoro-modal">
           <div className="modal">
             {!pomodoroState.isBreak ? (
               <>
@@ -98,6 +100,7 @@ console.log(pomodoroState.time);
                 <p>{translations[language].takeBreak}</p>
                 <div className="modal-buttons">
                   <button
+                    data-cy="pomodoro-start-break"
                     onClick={() => {
                       setPomodoroState((prev) => ({ ...prev, isBreak: true, time: 10 * 60 }));
                       setShowModal(false);
@@ -107,6 +110,7 @@ console.log(pomodoroState.time);
                     {translations[language].startBreak}
                   </button>
                   <button
+                    data-cy="pomodoro-skip-break"
                     onClick={() => {
                       setPomodoroState((prev) => ({ ...prev, isBreak: false, time: inputMinutes * 60 }));
                       setShowModal(false);
@@ -122,6 +126,7 @@ console.log(pomodoroState.time);
                 <p>{translations[language].readyForFocus}</p>
                 <div className="modal-buttons">
                   <button
+                    data-cy="pomodoro-start-focus"
                     onClick={() => {
                       setPomodoroState((prev) => ({ ...prev, isBreak: false, time: inputMinutes * 60 }));
                       setShowModal(false);
@@ -130,7 +135,7 @@ console.log(pomodoroState.time);
                   >
                     {translations[language].startFocus}
                   </button>
-                  <button onClick={() => setShowModal(false)}>
+                  <button data-cy="pomodoro-later" onClick={() => setShowModal(false)}>
                     {translations[language].later}
                   </button>
                 </div>

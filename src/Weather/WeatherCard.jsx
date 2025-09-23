@@ -1,6 +1,5 @@
 import React from "react";
-import "./weatherCard.css";
-
+import '../styles/weatherCard.css'
 const getWeatherIcon = (code) => {
   if ([0].includes(code)) return "☀️";   // Clear sky
   if ([1].includes(code)) return "🌤";   // Mainly clear

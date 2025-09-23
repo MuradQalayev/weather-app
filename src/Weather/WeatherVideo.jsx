@@ -1,5 +1,5 @@
 import React from 'react'
-import { weatherVideos, getWeatherCategory } from './WeatherCard'
+import { weatherVideos, getWeatherCategory } from '../Weather/WeatherCard'
 
 const WeatherVideo = ({ weatherCode, isDay }) => {
   const category = getWeatherCategory(weatherCode);

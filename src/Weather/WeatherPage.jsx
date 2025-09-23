@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useRef, useReducer, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import "./weatherPage.css";
-import WeatherCard from "./WeatherCard";
-import { LanguageContext } from "./LanguageContext";
-import { translations } from "./translationsOfLanguages/translations";
-import WeatherVideo from "./WeatherVideo";
-import fetchWeather from "./API/cityCoordinates";
-import Pomodoro from "./Pomodoro";
-
+import Pomodoro from "../Pomodoro/Pomodoro";
+import fetchWeather from "../API/cityCoordinates";
+import { translations } from "../translationsOfLanguages/translations";
+import { LanguageContext } from "../Context/LanguageContext";
+import WeatherCard from "../Weather/WeatherCard";
+import '../styles/weatherPage.css'
+import WeatherVideo from "../Weather/WeatherVideo";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -128,6 +127,7 @@ const WeatherPage = () => {
 
         <div className="nav-controls">
           <button
+            data-cy="toggle-weather"
             className="nav-button"
             onClick={() => dispatch({ type: "TOGGLE_WEATHER" })}
           >
@@ -137,6 +137,7 @@ const WeatherPage = () => {
           </button>
 
           <button
+            data-cy="toggle-pomodoro"
             className="nav-button"
             onClick={() => dispatch({ type: "TOGGLE_POMODORO" })}
           >
@@ -146,6 +147,7 @@ const WeatherPage = () => {
           </button>
 
           <button
+            data-cy="toggle-music"
             onClick={() => {
               const audio = document.getElementById("bg-music");
               if (audio.paused) {
@@ -191,6 +193,7 @@ const WeatherPage = () => {
 
               <div className="search-bar">
                 <input
+                  data-cy="city-input"
                   type="text"
                   value={state.search}
                   onChange={(e) =>
@@ -199,7 +202,7 @@ const WeatherPage = () => {
                   placeholder={translations[language].searchPlaceholder}
                   onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 />
-                <button onClick={handleSearch}>
+                <button data-cy="search-button" onClick={handleSearch}>
                   {translations[language].searchButton}
                 </button>
               </div>

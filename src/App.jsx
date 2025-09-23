@@ -1,10 +1,7 @@
 import { BrowserRouter, Link, Router, Routes,Route } from 'react-router-dom';
-import WeatherPage from './WeatherPage';
 import React from 'react';
-import LanguageProvider from './LanguageContext';
-import StudyMode from './StudyMode';
-
-
+import WeatherPage from './Weather/WeatherPage';
+import LanguageProvider from './Context/LanguageContext';
 
 function App(){
 
@@ -13,7 +10,6 @@ function App(){
           <BrowserRouter> 
             <Routes>
               <Route index element={<WeatherPage />} />
-              <Route path='/studymode' element={<StudyMode/>}/>
             </Routes>
         </BrowserRouter>
       </LanguageProvider>
