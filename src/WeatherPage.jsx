@@ -8,7 +8,6 @@ import WeatherVideo from './WeatherVideo';
 import fetchWeather from './API/cityCoordinates';
 import '../src/studymode.css'
 import { useNavigate } from 'react-router-dom';
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 
 
@@ -17,9 +16,7 @@ const WeatherPage = () => {
   const [search, setSearch] = useState('');
   const { language, switchLanguage } = useContext(LanguageContext);
   const [isPlaying, setIsPlaying] = useState(false);
-  const navigate = useNavigate()
   const forecastRef = useRef(null);
-  const [visible, setisVisible] = useState(true)
 
 
   function handleSearch() {
@@ -121,7 +118,7 @@ useEffect(() => {
         </div>
       </div>
 
-      <div className="video-background">
+      <div className="video-background no-scroll">
         <WeatherVideo
           weatherCode={data?.current_weather?.weathercode ?? 1}
           isDay={data?.current_weather?.is_day ?? 1}
@@ -130,23 +127,6 @@ useEffect(() => {
           <source src="./src/assets/rain_music.mp3" type="audio/mp3" />
           Your browser does not support the audio element.
         </audio>
-        {visible ? (
-          <button
-            className="details-toggle"
-            onClick={() =>{
-              forecastRef.current.scrollIntoView({ behavior: "smooth" });
-              setisVisible(false)}
-            }
-          >
-            <DotLottieReact
-              src="https://lottie.host/89133f61-fa5e-48c9-89c3-333151310841/aSszO2CgEj.lottie"
-              loop
-              autoplay
-            />
-          </button>
-        ) : (
-          ""
-        )}
 
         <button
           onClick={() => {
@@ -162,7 +142,7 @@ useEffect(() => {
           }}
           className="music-toggle"
         >
-          {isPlaying ? "🔊 Music On" : "🔇 Music Off"}
+          {isPlaying ? `🔊 ${translations[language].musicOn}` : `🔇${translations[language].musicOff} `}
         </button>
 
         <div ref={forecastRef} className="content">

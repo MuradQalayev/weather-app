@@ -11,6 +11,8 @@ export const translations = {
     weeklyForecast: "Here you can show weekly forecast etc.",
     studyMode: "Study Mode",
     normalMode: "Normal Mode",
+    musicOn: "Music On",
+    musicOff: "Music Off",
   },
   ru: {
     weatherApp: "Прогноз погоды",
@@ -24,6 +26,8 @@ export const translations = {
     weeklyForecast: "Здесь можно показать прогноз на неделю и т.д.",
     studyMode: "Учебный режим",
     normalMode: "Обычный режим",
+    musicOn: "Включить музыку",
+    musicOff: "Выключить музыку",
   },
   it: {
     weatherApp: "App Meteo",
@@ -37,6 +41,8 @@ export const translations = {
     weeklyForecast: "Qui puoi mostrare il meteo settimanale, ecc.",
     studyMode: "Modalità studio",
     normalMode: "Modalità normale",
+    musicOn: "Musica attiva",
+    musicOff: "Musica disattiva",
   },
   zh: {
     weatherApp: "天气应用",
@@ -50,6 +56,8 @@ export const translations = {
     weeklyForecast: "在这里可以显示每周天气预报、地图等。",
     studyMode: "学习模式",
     normalMode: "普通模式",
+    musicOn: "音乐开启",
+    musicOff: "音乐关闭",
   },
   es: {
     weatherApp: "Aplicación del Clima",
@@ -63,5 +71,7 @@ export const translations = {
     weeklyForecast: "Aquí puedes mostrar el pronóstico semanal, etc.",
     studyMode: "Modo de estudio",
     normalMode: "Modo normal",
+    musicOn: "Música activada",
+    musicOff: "Música desactivada",
   },
 };

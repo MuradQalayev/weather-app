@@ -2,21 +2,20 @@ import React from "react";
 import "./weatherCard.css";
 
 const getWeatherIcon = (code) => {
-  const map = {
-    0: "☀️",   // Clear sky
-    1: "🌤",   // Mainly clear
-    2: "⛅",   // Partly cloudy
-    3: "☁️",   // Overcast
-    45: "🌫",  // Fog
-    48: "🌫",  // Depositing rime fog
-    51: "🌦",  // Light drizzle
-    61: "🌧",  // Rain
-    71: "🌨",  // Snow
-    80: "🌦",  // Showers
-    95: "⛈",  // Thunderstorm
-  };
-  return map[code] || "❓";
+  if ([0].includes(code)) return "☀️";   // Clear sky
+  if ([1].includes(code)) return "🌤";   // Mainly clear
+  if ([2].includes(code)) return "⛅";   // Partly cloudy
+  if ([3].includes(code)) return "☁️";   // Overcast
+  if ([45, 48].includes(code)) return "🌫";   // Fog
+  if ([51, 53, 55].includes(code)) return "🌦"; // Drizzle
+  if ([61, 63, 65].includes(code)) return "🌧"; // Rain
+  if ([71, 73, 75, 77].includes(code)) return "🌨"; // Snow
+  if ([80, 81, 82].includes(code)) return "🌦"; // Showers
+  if ([95, 96, 99].includes(code)) return "⛈"; // Thunderstorm
+
+  return "❓"; 
 };
+
 export const weatherVideos = {
   clear: { day: "clear_day.mp4", night: "clear_night.mp4" },
   partly_cloudy: { day: "partly_cloudy_day.mp4", night: "partly_cloudy_night.mp4" },
