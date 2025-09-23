@@ -1,0 +1,98 @@
+.pomodoro-container {
+  top: 100px;
+  right: 40px;
+  width: 280px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 12px;
+  padding: 1.5rem;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  z-index: 5;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pomodoro-container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+.pomodoro-container h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.pomodoro-timer {
+  font-size: 2.4rem;
+  font-weight: bold;
+  margin: 1rem 0;
+  color: #f4f4f4;
+}
+
+.pomodoro-input {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.pomodoro-input input {
+  width: 60px;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255, 255, 255, 0.8);
+  color: #333;
+  text-align: center;
+  font-weight: bold;
+}
+
+.pomodoro-input button {
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.pomodoro-input button:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.pomodoro-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.pomodoro-buttons button {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.3);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.3s ease;
+}
+
+.pomodoro-buttons button:nth-child(2) {
+  background: linear-gradient(135deg, #ff7676, #ff3b3b);
+}
+
+.pomodoro-buttons button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+.pomodoro-buttons button:active {
+  transform: scale(0.95);
+}

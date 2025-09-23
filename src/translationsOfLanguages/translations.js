@@ -13,7 +13,29 @@ export const translations = {
     normalMode: "Normal Mode",
     musicOn: "Music On",
     musicOff: "Music Off",
+
+    // Pomodoro
+    pomodoro: "Pomodoro",
+    start: "Start",
+    stop: "Stop",
+    reset: "Reset",
+    set: "Set",
+    sessionComplete: "Session Complete 🎉",
+    takeBreak: "Take a 10 minute break?",
+    startBreak: "Yes, Start Break",
+    skipBreak: "Skip Break",
+    breakOver: "Break Over ⏰",
+    readyFocus: "Ready for another focus session?",
+    startFocus: "Yes, Start Focus",
+    later: "Later",
+
+    // Toggles
+    showWeather: "Show Weather",
+    hideWeather: "Hide Weather",
+    showPomodoro: "Show Pomodoro",
+    hidePomodoro: "Hide Pomodoro",
   },
+
   ru: {
     weatherApp: "Прогноз погоды",
     searchPlaceholder: "Введите город...",
@@ -28,7 +50,29 @@ export const translations = {
     normalMode: "Обычный режим",
     musicOn: "Включить музыку",
     musicOff: "Выключить музыку",
+
+    // Pomodoro
+    pomodoro: "Помодоро",
+    start: "Старт",
+    stop: "Стоп",
+    reset: "Сброс",
+    set: "Установить",
+    sessionComplete: "Сессия завершена 🎉",
+    takeBreak: "Сделать 10-минутный перерыв?",
+    startBreak: "Да, начать перерыв",
+    skipBreak: "Пропустить перерыв",
+    breakOver: "Перерыв окончен ⏰",
+    readyFocus: "Готовы к следующей сессии?",
+    startFocus: "Да, начать",
+    later: "Позже",
+
+    // Toggles
+    showWeather: "Показать погоду",
+    hideWeather: "Скрыть погоду",
+    showPomodoro: "Показать Помодоро",
+    hidePomodoro: "Скрыть Помодоро",
   },
+
   it: {
     weatherApp: "App Meteo",
     searchPlaceholder: "Inserisci città...",
@@ -43,7 +87,29 @@ export const translations = {
     normalMode: "Modalità normale",
     musicOn: "Musica attiva",
     musicOff: "Musica disattiva",
+
+    // Pomodoro
+    pomodoro: "Pomodoro",
+    start: "Avvia",
+    stop: "Ferma",
+    reset: "Resetta",
+    set: "Imposta",
+    sessionComplete: "Sessione completata 🎉",
+    takeBreak: "Vuoi fare una pausa di 10 minuti?",
+    startBreak: "Sì, Inizia pausa",
+    skipBreak: "Salta pausa",
+    breakOver: "Pausa finita ⏰",
+    readyFocus: "Pronto per un'altra sessione?",
+    startFocus: "Sì, Inizia sessione",
+    later: "Dopo",
+
+    // Toggles
+    showWeather: "Mostra Meteo",
+    hideWeather: "Nascondi Meteo",
+    showPomodoro: "Mostra Pomodoro",
+    hidePomodoro: "Nascondi Pomodoro",
   },
+
   zh: {
     weatherApp: "天气应用",
     searchPlaceholder: "输入城市...",
@@ -53,12 +119,34 @@ export const translations = {
     time: "时间",
     timezone: "时区",
     moreInfo: "更多信息",
-    weeklyForecast: "在这里可以显示每周天气预报、地图等。",
+    weeklyForecast: "在这里可以显示每周天气预报。",
     studyMode: "学习模式",
     normalMode: "普通模式",
     musicOn: "音乐开启",
     musicOff: "音乐关闭",
+
+    // Pomodoro
+    pomodoro: "番茄钟",
+    start: "开始",
+    stop: "停止",
+    reset: "重置",
+    set: "设置",
+    sessionComplete: "专注完成 🎉",
+    takeBreak: "要休息 10 分钟吗？",
+    startBreak: "是的，开始休息",
+    skipBreak: "跳过休息",
+    breakOver: "休息结束 ⏰",
+    readyFocus: "准备好再次专注了吗？",
+    startFocus: "是的，开始专注",
+    later: "稍后",
+
+    // Toggles
+    showWeather: "显示天气",
+    hideWeather: "隐藏天气",
+    showPomodoro: "显示番茄钟",
+    hidePomodoro: "隐藏番茄钟",
   },
+
   es: {
     weatherApp: "Aplicación del Clima",
     searchPlaceholder: "Ingresa ciudad...",
@@ -73,5 +161,26 @@ export const translations = {
     normalMode: "Modo normal",
     musicOn: "Música activada",
     musicOff: "Música desactivada",
+
+    // Pomodoro
+    pomodoro: "Pomodoro",
+    start: "Iniciar",
+    stop: "Detener",
+    reset: "Reiniciar",
+    set: "Establecer",
+    sessionComplete: "Sesión completa 🎉",
+    takeBreak: "¿Quieres tomar un descanso de 10 minutos?",
+    startBreak: "Sí, empezar descanso",
+    skipBreak: "Saltar descanso",
+    breakOver: "Descanso terminado ⏰",
+    readyFocus: "¿Listo para otra sesión?",
+    startFocus: "Sí, empezar sesión",
+    later: "Después",
+
+    // Toggles
+    showWeather: "Mostrar Clima",
+    hideWeather: "Ocultar Clima",
+    showPomodoro: "Mostrar Pomodoro",
+    hidePomodoro: "Ocultar Pomodoro",
   },
 };

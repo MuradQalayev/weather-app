@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useReducer } from "react";
+import React, { useContext, useEffect, useRef, useReducer, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import "./weatherPage.css";
 import WeatherCard from "./WeatherCard";
@@ -6,7 +6,7 @@ import { LanguageContext } from "./LanguageContext";
 import { translations } from "./translationsOfLanguages/translations";
 import WeatherVideo from "./WeatherVideo";
 import fetchWeather from "./API/cityCoordinates";
-import "../src/studymode.css";
+import Pomodoro from "./Pomodoro";
 
 
 function reducer(state, action) {
@@ -17,6 +17,10 @@ function reducer(state, action) {
       return { ...state, search: action.payload };
     case "TOGGLE_PLAY":
       return { ...state, isPlaying: !state.isPlaying };
+    case "TOGGLE_WEATHER":
+      return { ...state, showWeather: !state.showWeather };
+    case "TOGGLE_POMODORO":
+      return { ...state, showPomodoro: !state.showPomodoro };
     default:
       return state;
   }
@@ -27,9 +31,23 @@ const WeatherPage = () => {
     city: "Baku",
     search: "",
     isPlaying: false,
+    showWeather: true,
+    showPomodoro: true,
   });
   const { language, switchLanguage } = useContext(LanguageContext);
   const forecastRef = useRef(null);
+  const audioRef = useRef(null);
+  const [pomodoroState, setPomodoroState] = useState({
+    time: 25 * 60,
+    isActive: false,
+    isBreak: false,
+  });
+
+  useEffect(() => {
+    if (pomodoroState.time === 0 && !state.showPomodoro) {
+      dispatch({ type: "TOGGLE_POMODORO" });
+    }
+  }, [pomodoroState.time, state.showPomodoro, dispatch]);
 
   function handleSearch() {
     if (!state.search.trim()) return;
@@ -52,7 +70,20 @@ const WeatherPage = () => {
     cacheTime: 1000 * 60 * 30,
   });
   const clockRef = useRef();
+  //for pomodoro
+  useEffect(() => {
+    let interval = null;
+    if (pomodoroState.isActive && pomodoroState.time > 0) {
+      interval = setInterval(() => {
+        setPomodoroState((prev) => ({ ...prev, time: prev.time - 1 }));
+      }, 1000);
+    } else if (pomodoroState.time === 0 && pomodoroState.isActive) {
+      setPomodoroState((prev) => ({ ...prev, isActive: false }));
+    }
+    return () => clearInterval(interval);
+  }, [pomodoroState.isActive, pomodoroState.time]);
 
+  
   useEffect(() => {
     if (!data?.timezone) return;
 
@@ -80,8 +111,57 @@ const WeatherPage = () => {
 
   return (
     <div className="page">
+      <div className="video-background">
+        <WeatherVideo
+          weatherCode={data?.current_weather?.weathercode ?? 1}
+          isDay={data?.current_weather?.is_day ?? 1}
+        />
+      </div>
+
+      <audio id="bg-music" loop muted ref={audioRef}>
+        <source src="./src/assets/rain_music.mp3" type="audio/mp3" />
+        Your browser does not support the audio element.
+      </audio>
+
       <div className="navbar">
+        <div className="logo">☁️ Weather+</div>
+
         <div className="nav-controls">
+          <button
+            className="nav-button"
+            onClick={() => dispatch({ type: "TOGGLE_WEATHER" })}
+          >
+            {state.showWeather
+              ? translations[language].hideWeather
+              : translations[language].showWeather}
+          </button>
+
+          <button
+            className="nav-button"
+            onClick={() => dispatch({ type: "TOGGLE_POMODORO" })}
+          >
+            {state.showPomodoro
+              ? translations[language].hidePomodoro
+              : translations[language].showPomodoro}
+          </button>
+
+          <button
+            onClick={() => {
+              const audio = document.getElementById("bg-music");
+              if (audio.paused) {
+                audio.muted = false;
+                audio.play();
+              } else {
+                audio.pause();
+              }
+              dispatch({ type: "TOGGLE_PLAY" });
+            }}
+            className="nav-button"
+          >
+            {state.isPlaying
+              ? `🔊 ${translations[language].musicOn}`
+              : `🔇${translations[language].musicOff} `}
+          </button>
           <select
             value={language}
             onChange={(e) => switchLanguage(e.target.value)}
@@ -97,76 +177,67 @@ const WeatherPage = () => {
       </div>
 
       <div className="hero">
-        <div className="overlay">
-          <h1>{translations[language].weatherApp}</h1>
+        <div
+          className={`main-layout ${
+            (!state.showWeather && state.showPomodoro) ||
+            (!state.showPomodoro && state.showWeather)
+              ? "centered"
+              : ""
+          }`}
+        >
+          {state.showWeather && (
+            <div className="overlay">
+              <h1>{translations[language].weatherApp}</h1>
 
-          <div className="search-bar">
-            <input
-              type="text"
-              value={state.search}
-              onChange={(e) =>
-                dispatch({ type: "SET_SEARCH", payload: e.target.value })
-              }
-              placeholder={translations[language].searchPlaceholder}
-              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-            />
-            <button onClick={handleSearch}>
-              {translations[language].searchButton}
-            </button>
-          </div>
+              <div className="search-bar">
+                <input
+                  type="text"
+                  value={state.search}
+                  onChange={(e) =>
+                    dispatch({ type: "SET_SEARCH", payload: e.target.value })
+                  }
+                  placeholder={translations[language].searchPlaceholder}
+                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                />
+                <button onClick={handleSearch}>
+                  {translations[language].searchButton}
+                </button>
+              </div>
 
-          <div className="clock" ref={clockRef}></div>
+              <div className="clock" ref={clockRef}></div>
 
-          {data && (
-            <>
-              <p>
-                {translations[language].city}: <b>{state.city}</b>
-              </p>
-              <p>
-                {translations[language].temperature}:{" "}
-                <b>{data.current_weather?.temperature}°C</b>
-              </p>
-              <p>
-                {translations[language].time}:{" "}
-                <b>{trimmedTime(data.current_weather?.time)}</b>
-              </p>
-              <p>{data.timezone}</p>
-            </>
+              {data && (
+                <>
+                  <p>
+                    {translations[language].city}: <b>{state.city}</b>
+                  </p>
+                  <p>
+                    {translations[language].temperature}:{" "}
+                    <b>{data.current_weather?.temperature}°C</b>
+                  </p>
+                  <p>
+                    {translations[language].time}:{" "}
+                    <b>{trimmedTime(data.current_weather?.time)}</b>
+                  </p>
+                  <p>{data.timezone}</p>
+                </>
+              )}
+            </div>
           )}
+          {state.showPomodoro ? (
+            <Pomodoro
+              pomodoroState={pomodoroState}
+              setPomodoroState={setPomodoroState}
+              isPlaying={state.isPlaying}
+              dispatch={dispatch}
+              audio={audioRef.current}
+              showPomodoro={state.showPomodoro}
+            />
+          ) : null}
         </div>
       </div>
-
-      <div className="video-background no-scroll">
-        <WeatherVideo
-          weatherCode={data?.current_weather?.weathercode ?? 1}
-          isDay={data?.current_weather?.is_day ?? 1}
-        />
-        <audio id="bg-music" loop muted>
-          <source src="./src/assets/rain_music.mp3" type="audio/mp3" />
-          Your browser does not support the audio element.
-        </audio>
-
-        <button
-          onClick={() => {
-            const audio = document.getElementById("bg-music");
-            if (audio.paused) {
-              audio.muted = false;
-              audio.play();
-            } else {
-              audio.pause();
-            }
-            dispatch({ type: "TOGGLE_PLAY" });
-          }}
-          className="music-toggle"
-        >
-          {state.isPlaying
-            ? `🔊 ${translations[language].musicOn}`
-            : `🔇${translations[language].musicOff} `}
-        </button>
-
+      {state.showWeather ? (
         <div ref={forecastRef} className="content">
-          {/* <h2>{translations[language].moreInfo}</h2> */}
-          {/* <p>{translations[language].weeklyForecast}</p> */}
           <div>
             {data?.daily && (
               <div className="forecast">
@@ -184,7 +255,7 @@ const WeatherPage = () => {
             )}
           </div>
         </div>
-      </div>
+      ) : null}
     </div>
   );
 };
