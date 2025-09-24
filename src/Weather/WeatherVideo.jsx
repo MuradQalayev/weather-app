@@ -7,6 +7,22 @@ const WeatherVideo = ({ weatherCode, isDay }) => {
     ? weatherVideos[category].day 
     : weatherVideos[category].night;
 
+    const isMobile = window.innerWidth < 768;
+
+    if (isMobile) {
+      return(
+        <>
+          <div>
+            <img
+              src={`../public/mobile.jpg`}
+              alt={category}
+              className="weather-background-image"
+            />
+          </div>
+        </>
+      )
+    }
+
   return (
     <div>
       <video key={videoLink} autoPlay muted loop playsInline>

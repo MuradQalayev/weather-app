@@ -1,14 +1,21 @@
-import React, { useContext, useEffect, useRef, useReducer, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useRef,
+  useReducer,
+  useState,
+} from "react";
 import { useQuery } from "@tanstack/react-query";
 import Pomodoro from "../Pomodoro/Pomodoro";
 import fetchWeather from "../API/cityCoordinates";
-import { translations } from "../translationsOfLanguages/translations";
+import { translations } from "../TranslationsOfLanguages/translations";
 import { LanguageContext } from "../Context/LanguageContext";
 import WeatherCard from "../Weather/WeatherCard";
-import '../styles/weatherPage.css'
+import "../styles/weatherPage.css";
 import WeatherVideo from "../Weather/WeatherVideo";
-import GeminiModal from "../gemini-ai-box/GeminiChat";
 
+import Navbar from "../navigationBar/Navbar";
+import GeminiModal from "../AI/GeminiChat";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -58,7 +65,8 @@ const WeatherPage = () => {
     dispatch({
       type: "SET_CITY",
       payload:
-        state.search.charAt(0).toUpperCase() + state.search.slice(1).toLowerCase(),
+        state.search.charAt(0).toUpperCase() +
+        state.search.slice(1).toLowerCase(),
     });
     dispatch({
       type: "SET_SEARCH",
@@ -87,7 +95,6 @@ const WeatherPage = () => {
     return () => clearInterval(interval);
   }, [pomodoroState.isActive, pomodoroState.time]);
 
-  
   useEffect(() => {
     if (!data?.timezone) return;
 
@@ -128,63 +135,14 @@ const WeatherPage = () => {
       </audio>
 
       <div className="navbar">
-        <div className="logo">☁️ Weather+</div>
-
-        <div className="nav-controls">
-          <button className="nav-button" onClick={() => setIsModalOpen(true)}>
-            {translations[language].askAI}
-          </button>
-
-          <button
-            data-cy="toggle-weather"
-            className="nav-button"
-            onClick={() => dispatch({ type: "TOGGLE_WEATHER" })}
-          >
-            {state.showWeather
-              ? translations[language].hideWeather
-              : translations[language].showWeather}
-          </button>
-
-          <button
-            data-cy="toggle-pomodoro"
-            className="nav-button"
-            onClick={() => dispatch({ type: "TOGGLE_POMODORO" })}
-          >
-            {state.showPomodoro
-              ? translations[language].hidePomodoro
-              : translations[language].showPomodoro}
-          </button>
-
-          <button
-            data-cy="toggle-music"
-            onClick={() => {
-              const audio = document.getElementById("bg-music");
-              if (audio.paused) {
-                audio.muted = false;
-                audio.play();
-              } else {
-                audio.pause();
-              }
-              dispatch({ type: "TOGGLE_PLAY" });
-            }}
-            className="nav-button"
-          >
-            {state.isPlaying
-              ? `🔊 ${translations[language].musicOn}`
-              : `🔇${translations[language].musicOff} `}
-          </button>
-          <select
-            value={language}
-            onChange={(e) => switchLanguage(e.target.value)}
-            className="language-dropdown"
-          >
-            <option value="en">🇬🇧 English</option>
-            <option value="ru">🇷🇺 Русский</option>
-            <option value="it">🇮🇹 Italiano</option>
-            <option value="zh">🇨🇳 中文</option>
-            <option value="es">🇪🇸 Español</option>
-          </select>
-        </div>
+        <Navbar
+          switchLanguage={switchLanguage}
+          language={language}
+          setIsModalOpen={setIsModalOpen}
+          translations={translations}
+          state={state}
+          dispatch={dispatch}
+        />
       </div>
 
       <div className="hero">
@@ -246,19 +204,21 @@ const WeatherPage = () => {
               showPomodoro={state.showPomodoro}
             />
           ) : null}
-          
         </div>
         <GeminiModal
           isOpen={isModalOpen}
           onClose={() => {
-            setIsModalOpen(false)
-            setQuery("")
-            setResponse("")
+            setIsModalOpen(false);
+            setQuery("");
+            setResponse("");
           }}
           query={query}
           setQuery={setQuery}
           response={response}
           setResponse={setResponse}
+          onSetPomodoro={(minutes) =>
+            setPomodoroState((prev) => ({ ...prev, time: minutes * 60 }))
+          }
         />
       </div>
       {state.showWeather ? (
@@ -276,6 +236,12 @@ const WeatherPage = () => {
                     weatherCode={data.daily.weathercode[i]}
                   />
                 ))}
+                <div className="weather-footer">
+                  <small>
+                    ⚖️ Powered by Google Gemini & Open-Meteo | For study/demo
+                    purposes only.{" "}
+                  </small>
+                </div>
               </div>
             )}
           </div>

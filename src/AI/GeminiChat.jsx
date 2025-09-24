@@ -1,14 +1,22 @@
 // src/components/GeminiModal.jsx
 import React, { useContext, useState } from "react";
-import '../styles/modal.css';
-import {LanguageContext} from "../Context/LanguageContext"
-import {translations } from "../translationsOfLanguages/translations";
+import "../styles/modal.css";
+import { LanguageContext } from "../Context/LanguageContext";
+import { translations } from "../TranslationsOfLanguages/translations";
 
-const GeminiModal = ({ isOpen, onClose, query, setQuery,response, setResponse }) => {
+const GeminiModal = ({
+  isOpen,
+  onClose,
+  query,
+  setQuery,
+  response,
+  setResponse,
+  onSetPomodoro,
+}) => {
   const [loading, setLoading] = useState(false);
   const { language } = useContext(LanguageContext);
 
-  if (!isOpen) return null; 
+  if (!isOpen) return null;
 
   const handleSend = async () => {
     if (!query.trim()) return;
@@ -28,14 +36,25 @@ const GeminiModal = ({ isOpen, onClose, query, setQuery,response, setResponse })
       }
 
       const data = await res.json();
-      setResponse(data.plan || "❌ No response from AI");
+      let text = data.plan || "❌ No response from AI";
+
+      // 🔍 Look for minutes in the AI text
+      const match = text.match(/(\d+)\s*(?:min|minutes|m)/i);
+      if (match) {
+        const minutes = parseInt(match[1], 10);
+        onSetPomodoro(minutes);
+
+        // Add confirmation message
+        text += `\n\n✅ I have changed your timer to ${minutes} minutes.`;
+      }
+
+      setResponse(text);
     } catch (err) {
       console.error("Frontend fetch error:", err);
       setResponse("❌ Error: " + err.message);
     } finally {
       setLoading(false);
     }
-
   };
 
   return (
@@ -63,6 +82,21 @@ const GeminiModal = ({ isOpen, onClose, query, setQuery,response, setResponse })
           ) : (
             <p>{response}</p>
           )}
+        </div>
+        <div className="chat-footer">
+          <img
+            src="../public/gemini.png"
+            alt="Gemini Logo"
+            style={{
+              height: "18px",
+              verticalAlign: "middle",
+              marginRight: "6px",
+            }}
+          />
+          <small style={{ color: "#777", fontSize: "0.75rem" }}>
+            Powered by Google Gemini AI — Beta feature. Responses may be
+            inaccurate.
+          </small>
         </div>
       </div>
     </div>

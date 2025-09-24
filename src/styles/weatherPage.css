@@ -12,7 +12,7 @@
 .overlay {
   top: 25%;
   left: 5%;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(12px);
   border-radius: 15px;
   padding: 2rem;
@@ -118,11 +118,11 @@ body {
 }
 
 
-.nav-controls {
+/* .nav-controls {
   display: flex;
   align-items: center;
   gap: 1rem;
-}
+} */
 
 .study-btn {
   padding: 8px 14px;
@@ -214,11 +214,17 @@ body {
   z-index: -1; 
   overflow: hidden;
 }
-
 .video-background video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .video-background video {
+    object-fit: cover;
+    filter: brightness(0.85);  
+  }
 }
 
 
@@ -286,4 +292,220 @@ body {
 .language-dropdown:hover {
   border-color: #434e58;
   box-shadow: 0 0 8px rgba(79,172,254,0.4);
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+/* .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: rgba(0,0,0,0.8);
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 160px;
+  z-index: 2000;
+} */
+
+.dropdown-menu button,
+.dropdown-menu select {
+  background: transparent;
+  border: none;
+  color: white;
+  text-align: left;
+  cursor: pointer;
+}
+
+.nav-dropdown .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: rgba(0, 0, 0, 0.75); 
+  padding: 12px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;           
+  min-width: 200px;    
+  z-index: 2000;
+}
+
+.nav-dropdown .dropdown-menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;          
+  padding: 10px 14px; 
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-dropdown .dropdown-menu button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.nav-dropdown .dropdown-menu .material-symbols-outlined {
+  font-size: 20px;
+}
+
+.weather-footer {
+  margin-top: 10px;
+  text-align: center;
+  opacity: 0.8;
+  font-size: 1rem;
+}
+.weather-footer a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+/* === RESPONSIVE DESIGN === */
+
+/* Tablets and below */
+@media (max-width: 1024px) {
+  .main-layout {
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px;
+    gap: 1.5rem;
+  }
+
+  .overlay {
+    max-width: 90%;
+    left: auto;
+    top: auto;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .clock {
+    font-size: 2.5rem;
+  }
+
+  .navbar {
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+}
+
+/* Phones */
+@media (max-width: 768px) {
+  .main-layout {
+    padding: 40px 15px;
+    gap: 1rem;
+  }
+
+  .overlay {
+    padding: 1.2rem;
+    font-size: 0.95rem;
+  }
+
+  .clock {
+    font-size: 2rem;
+  }
+
+  .search-bar {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .search-bar input,
+  .search-bar button {
+    width: 100%;
+  }
+
+  .nav-controls {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .nav-button,
+  .language-dropdown {
+    width: 100%;
+    text-align: center;
+  }
+
+  .forecast {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+  }
+
+  .forecast > * {
+    min-width: auto;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .overlay {
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .clock {
+    font-size: 1.6rem;
+  }
+
+  .forecast {
+    grid-template-columns: 1fr;
+  }
+
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar .logo {
+    font-size: 1.2rem;
+  }
+}
+
+/* Hamburger button */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .nav-controls {
+    display: none; /* hidden by default */
+    flex-direction: column;
+    gap: 0.8rem;
+    background: rgba(0,0,0,0.9);
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    padding: 1rem;
+    border-radius: 10px;
+    z-index: 1000;
+  }
+
+  .nav-controls.open {
+    display: flex; 
+  }
 }

@@ -2,10 +2,19 @@ import express from "express";
 import dotenv from "dotenv";
 import fetch from "node-fetch"; 
 import cors from "cors";
+import rateLimit from "express-rate-limit";
 
 dotenv.config();
 const app = express();
 app.use(express.json());
+
+const limiter = rateLimit({
+  windowMs: parseInt(process.env.RATE_LIMIT_WINDOW, 10) || 60 * 1000,
+  max: parseInt(process.env.RATE_LIMIT_MAX, 10) || 5,
+  message: { error: "⚠️ Too many requests. Please try again in a minute." },
+});
+
+
 
 app.use(
   cors({
@@ -14,6 +23,8 @@ app.use(
     allowedHeaders: ["Content-Type"],
   })
 );
+
+app.use("/api/plan", limiter);
 
 app.post("/api/plan", async (req, res) => {
 
@@ -56,13 +67,25 @@ User input: "${text}"
     const data = await response.json();
     console.log("Gemini raw response:", JSON.stringify(data, null, 2));
 
-    if (data.candidates && data.candidates.length > 0) {
-      const parts = data.candidates[0].content.parts;
-      const plan = parts.map((p) => p.text).join("\n");
+
+    if (data.error) {
+      console.error("Gemini API error:", data.error);
+      return res.status(429).json({
+        error: "⚠️ Gemini quota exceeded. Please try again later.",
+      });
+    }
+
+    if (data?.candidates?.[0]?.content?.parts?.length > 0) {
+      const plan = data.candidates[0].content.parts
+        .map((p) => p.text)
+        .join("\n");
       res.json({ plan });
     } else {
-      res.status(500).json({ error: "No response from Gemini" });
+      console.error("Unexpected Gemini response:", data);
+      res.status(500).json({ error: "No valid response from Gemini" });
     }
+
+
   } catch (err) {
     console.error("Gemini error:", err);
     res.status(500).json({ error: "Something went wrong" });

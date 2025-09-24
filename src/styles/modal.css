@@ -122,3 +122,19 @@
     transform: translateY(0) scale(1);
   }
 }
+
+.chat-footer {
+  margin-top: 10px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.8;
+}
+.chat-footer img {
+  height: 18px;
+}
+.chat-footer small {
+  font-style: italic;
+}

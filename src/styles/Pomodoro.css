@@ -96,3 +96,67 @@
 .pomodoro-buttons button:active {
   transform: scale(0.95);
 }
+
+.pomodoro-container {
+  width: 100%;
+  max-width: 320px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 2rem;   /* sits below weather */
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  z-index: 5;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pomodoro-container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+/* 📱 Tablets and smaller */
+@media (max-width: 1024px) {
+  .pomodoro-container {
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* 📱 Phones */
+@media (max-width: 768px) {
+  .pomodoro-container {
+    padding: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .pomodoro-timer {
+    font-size: 2rem;
+  }
+
+  .pomodoro-input {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .pomodoro-buttons {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+}
+
+/* 📱 Small phones */
+@media (max-width: 480px) {
+  .pomodoro-container {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
+
+  .pomodoro-timer {
+    font-size: 1.6rem;
+  }
+}
