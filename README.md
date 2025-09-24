@@ -33,3 +33,6 @@ Install dependencies:
 npm install
 # or
 yarn install
+
+For backend cd weather-app/backend => npm start
+For frontend cd weather-app  => npm run dev

@@ -7,6 +7,8 @@ import { LanguageContext } from "../Context/LanguageContext";
 import WeatherCard from "../Weather/WeatherCard";
 import '../styles/weatherPage.css'
 import WeatherVideo from "../Weather/WeatherVideo";
+import GeminiModal from "../gemini-ai-box/GeminiChat";
+
 
 function reducer(state, action) {
   switch (action.type) {
@@ -36,6 +38,9 @@ const WeatherPage = () => {
   const { language, switchLanguage } = useContext(LanguageContext);
   const forecastRef = useRef(null);
   const audioRef = useRef(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [response, setResponse] = useState("");
   const [pomodoroState, setPomodoroState] = useState({
     time: 25 * 60,
     isActive: false,
@@ -126,6 +131,10 @@ const WeatherPage = () => {
         <div className="logo">☁️ Weather+</div>
 
         <div className="nav-controls">
+          <button className="nav-button" onClick={() => setIsModalOpen(true)}>
+            {translations[language].askAI}
+          </button>
+
           <button
             data-cy="toggle-weather"
             className="nav-button"
@@ -237,7 +246,20 @@ const WeatherPage = () => {
               showPomodoro={state.showPomodoro}
             />
           ) : null}
+          
         </div>
+        <GeminiModal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false)
+            setQuery("")
+            setResponse("")
+          }}
+          query={query}
+          setQuery={setQuery}
+          response={response}
+          setResponse={setResponse}
+        />
       </div>
       {state.showWeather ? (
         <div ref={forecastRef} className="content">

@@ -34,6 +34,12 @@ export const translations = {
     hideWeather: "Hide Weather",
     showPomodoro: "Show Pomodoro",
     hidePomodoro: "Hide Pomodoro",
+
+    // AI
+    askAI: "Ask AI",
+    smartPomodoro: "🤖 Smart Pomodoro Search / Ask AI",
+    askAnything: "Ask anything...",
+    ask: "Ask",
   },
 
   ru: {
@@ -71,6 +77,12 @@ export const translations = {
     hideWeather: "Скрыть погоду",
     showPomodoro: "Показать Помодоро",
     hidePomodoro: "Скрыть Помодоро",
+
+    // AI
+    askAI: "Спросить ИИ",
+    smartPomodoro: "🤖 Умный поиск Помодоро / Спросить ИИ",
+    askAnything: "Спросите что угодно...",
+    ask: "Спросить",
   },
 
   it: {
@@ -108,6 +120,12 @@ export const translations = {
     hideWeather: "Nascondi Meteo",
     showPomodoro: "Mostra Pomodoro",
     hidePomodoro: "Nascondi Pomodoro",
+
+    // AI
+    askAI: "Chiedi all'AI",
+    smartPomodoro: "🤖 Ricerca Pomodoro Intelligente / Chiedi all'AI",
+    askAnything: "Chiedi qualsiasi cosa...",
+    ask: "Chiedi",
   },
 
   zh: {
@@ -145,6 +163,12 @@ export const translations = {
     hideWeather: "隐藏天气",
     showPomodoro: "显示番茄钟",
     hidePomodoro: "隐藏番茄钟",
+
+    // AI
+    askAI: "询问AI",
+    smartPomodoro: "🤖 智能番茄钟搜索 / 询问AI",
+    askAnything: "问点什么...",
+    ask: "询问",
   },
 
   es: {
@@ -182,5 +206,12 @@ export const translations = {
     hideWeather: "Ocultar Clima",
     showPomodoro: "Mostrar Pomodoro",
     hidePomodoro: "Ocultar Pomodoro",
+
+    // AI
+    askAI: "Preguntar a la IA",
+    smartPomodoro: "🤖 Búsqueda Inteligente de Pomodoro / Preguntar a la IA",
+    askAnything: "Pregunta lo que sea...",
+    ask: "Preguntar",
   },
 };
+
