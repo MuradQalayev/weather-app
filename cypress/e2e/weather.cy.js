@@ -63,13 +63,11 @@ describe("Weather App", () => {
   });
 
   it("switches app language to Italian", () => {
-    // cy.get(".hamburger").click(); 
     cy.get("select.nav-button").select("it");
     cy.contains("Meteo").should("exist");
   });
 
   it("switches app language to Spanish", () => {
-    // cy.get(".hamburger").click(); 
     cy.get("select.nav-button").select("es");
     cy.contains("Clima").should("exist");
   });
