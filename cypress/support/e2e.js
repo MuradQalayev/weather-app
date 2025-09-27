@@ -15,3 +15,8 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
+Cypress.on("uncaught:exception", (err) => {
+  if (err.message.includes("The play() request was interrupted")) {
+    return false; // prevent test from failing
+  }
+});

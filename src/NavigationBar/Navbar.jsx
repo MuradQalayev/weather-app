@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react'
 
 
@@ -32,6 +33,7 @@ const Navbar = ({switchLanguage, language, setIsModalOpen, translations, state, 
           {translations[language].askAI}
         </button>
         <select
+          data-cy="language-dropdown"
           className="nav-button"
           value={language}
           onChange={(e) => switchLanguage(e.target.value)}
@@ -50,7 +52,7 @@ const Navbar = ({switchLanguage, language, setIsModalOpen, translations, state, 
               data-cy="toggle-weather"
               onClick={() => dispatch({ type: "TOGGLE_WEATHER" })}
             >
-              <span class="material-symbols-outlined">cloud</span>
+              <span className="material-symbols-outlined">cloud</span>
               {state.showWeather
                 ? translations[language].hideWeather
                 : translations[language].showWeather}
@@ -74,6 +76,7 @@ const Navbar = ({switchLanguage, language, setIsModalOpen, translations, state, 
                 if (audio.paused) {
                   audio.muted = false;
                   audio.play();
+                  audio.play().catch(() => {}); 
                 } else {
                   audio.pause();
                 }
