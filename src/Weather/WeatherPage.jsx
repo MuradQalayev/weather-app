@@ -15,6 +15,7 @@ import "../styles/weatherPage.css";
 import WeatherVideo from "../Weather/WeatherVideo";
 
 import Navbar from "../navigationBar/Navbar";
+
 import GeminiModal from "../AI/GeminiChat";
 
 function reducer(state, action) {

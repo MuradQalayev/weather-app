@@ -4,6 +4,7 @@ import "../styles/modal.css";
 import { LanguageContext } from "../Context/LanguageContext";
 import { translations } from "../TranslationsOfLanguages/translations";
 
+
 const GeminiModal = ({
   isOpen,
   onClose,
